@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "This template provisions our dev network environment"
+Metadata: {}
+
+Parameters:
+  # Dev VPC parameters
+  DevVPCCidrBlockPara:
+    Description: Please provide yor Dev VPC Cidr Block
+    Type: String
+    Default: 10.0.0.0/16
+
+  DevVPCEnableDnsSupportPara:
+    Description: Please Enable Dns Support (true/false)
+    Type: String
+    
+  # Web Server Subnet parameters
+  DevWebServerSubnetAZPara:
+    Description: Please Select an AZ for the DevWebserver subnet
+    Type: AWS::EC2::AvailabilityZone::Name
+
+  DevWebServerSubnetCidrBlockPara:
+    Description: Please provide yor DevWebserver Subnet Cidr Block
+    Type: String
+
+  # App Server Subnet parameters
+  DevAppServerSubnetAZPara:
+    Description: Please Select an AZ for the DevAppserver subnet
+    Type: AWS::EC2::AvailabilityZone::Name
+
+  DevAppServerSubnetCidrBlockPara:
+    Description: Please provide your DevAppserver Subnet Cidr Block
+    Type: String
+
+  # DB Server Subnet parameters
+  DevDBServerSubnetAZPara:
+    Description: Please Select an AZ for the DevDBserver subnet
+    Type: AWS::EC2::AvailabilityZone::Name
+
+  DevDBServerSubnetCidrBlockPara:
+    Description: Please provide your DevDBSubnet Cidr Block
+    Type: String
+    
+Mappings: {}
+
+Conditions: {}
+
+Resources: 
+  # Development VPC
+  DevVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref DevVPCCidrBlockPara
+      EnableDnsSupport: !Ref DevVPCEnableDnsSupportPara
+      Tags:
+        - Key: Name
+          Value: DevVPC
+ 
+  # webserver subnet
+  DevWebServerSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref DevWebServerSubnetAZPara
+      VpcId: !Ref DevVPC
+      CidrBlock: !Ref DevWebServerSubnetCidrBlockPara
+      Tags:
+        - Key: Name
+          Value: DevWebServerSubnet
+
+  # appserver subnet
+  DevAppServerSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref DevAppServerSubnetAZPara
+      VpcId: !Ref DevVPC
+      CidrBlock: !Ref DevAppServerSubnetCidrBlockPara
+      Tags:
+        - Key: Name
+          Value: DevAppServerSubnet
+  
+  # databaseserver subnet
+  DevDBServerSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref DevDBServerSubnetAZPara
+      VpcId: !Ref DevVPC
+      CidrBlock: !Ref DevDBServerSubnetCidrBlockPara
+      Tags:
+        - Key: Name
+          Value: DevDBServerSubnet
+
+          
+
+Outputs: {}
